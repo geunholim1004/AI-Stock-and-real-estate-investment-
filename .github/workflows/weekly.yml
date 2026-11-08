@@ -1,0 +1,40 @@
+name: weekly-report
+on:
+  schedule:
+    - cron: "17 23 * * 0"   # 매주 월요일 08:17 KST
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    env:
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      OPENAI_MODEL: ${{ vars.OPENAI_MODEL }}
+      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+      ANTHROPIC_MODEL: ${{ vars.ANTHROPIC_MODEL }}
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+      GEMINI_MODEL: ${{ vars.GEMINI_MODEL }}
+      KAKAO_ACCESS_TOKEN: ${{ secrets.KAKAO_ACCESS_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.12"}
+      - run: pip install -e .
+      # 실제 원장·경매 CSV는 저장소에 두지 않는다. 암호화 시크릿에서 복원한다.
+      - name: 비공개 데이터 복원
+        run: |
+          mkdir -p data/private
+          echo "${{ secrets.LEDGER_CSV_B64 }}"  | base64 -d > data/private/ledger.csv
+          echo "${{ secrets.AUCTIONS_CSV_B64 }}" | base64 -d > data/private/auctions.csv
+      - name: 주간 라운드 실행 + 카톡 요약 전송
+        run: |
+          LIVE=""; [ -n "$OPENAI_API_KEY" ] && [ -n "$ANTHROPIC_API_KEY" ] && [ -n "$GEMINI_API_KEY" ] && LIVE="--live"
+          python -m office --ledger data/private/ledger.csv weekly --auctions data/private/auctions.csv $LIVE --send
+      - uses: actions/upload-artifact@v4
+        with:
+          name: weekly-report
+          path: |
+            reports/
+            logs/
+          retention-days: 90

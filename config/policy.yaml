@@ -1,0 +1,27 @@
+# 투자정책서(INVESTMENT_POLICY.md v0.2)의 기계 판정용 수치.
+# 오너만 수정한다. AI가 수정하면 CI가 차단한다.
+version: "0.2"
+drawdown:
+  warning: 0.10        # 전체 자산 고점 대비 10% 감소 → 경고
+  limit: 0.15          # 15% → 모든 신규 투입 중단
+# 위험 예산은 운용 버킷(B1~B3)과 신규 부동산 매입에 적용한다.
+# 보유 중인 부동산(B4)의 시세 변동은 예산이 아니라 실제 낙폭(drawdown)으로 분기마다 반영한다.
+budget_scope: [B1_income, B2_equity, B3_auction]
+risk_budget:           # 최악 시나리오 손실, 전체 자산 대비 비율
+  B0_safety: 0.00
+  B1_income: 0.02
+  B2_equity: 0.07
+  B3_auction: 0.05
+  B4_realestate: 0.01   # 신규 부동산 매입분에만 적용
+single_position_cap: 0.05   # 단일 종목·물건 상한 (국채·현금성 제외)
+safety_months: 12           # B0 안전판 = 월 생활비 × 12
+cashflow_target_monthly: 5000000   # 월 투자현금흐름 목표 (원)
+worst_case_drawdown:        # 버킷별 최악 하락률 가정 (위험 예산 계산용)
+  B0_safety: 0.00
+  B1_income: 0.15
+  B2_equity: 0.40
+  B3_auction: 0.30
+  B4_realestate: 0.20
+conflict_tickers:           # 이해상충 종목 (사전 확인 대상) — 오너가 확정
+  - "005930"   # 예시
+  - "005935"

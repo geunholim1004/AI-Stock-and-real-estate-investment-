@@ -1,0 +1,27 @@
+name: ci
+on:
+  pull_request:
+  push:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.12"}
+      - run: pip install -e ".[dev]"
+      - name: 1. 금지 구역·비밀 파일 검사
+        if: github.event_name == 'pull_request'
+        run: |
+          files=$(git diff --name-only origin/${{ github.base_ref }}...HEAD)
+          python scripts/guard_forbidden.py "${{ github.event.pull_request.user.login }}" $files
+      - name: 1. 형식 검사
+        run: ruff check src tests scripts
+      - name: 2~3. 단위·규칙 테스트
+        run: pytest -q
+      - name: 5. 산출물 생성 (예시 데이터, 모의 AI)
+        run: python -m office weekly --out reports/weekly.md
