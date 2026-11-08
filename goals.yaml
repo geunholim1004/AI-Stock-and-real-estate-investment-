@@ -1,0 +1,29 @@
+owner: Edward
+updated: 2026-11-09
+mission: "하나님 안에서 가족의 건강과 자유를 지키고, 다음 세대 인재를 기르는 데 필요한 부를 정직하게 쌓는다"
+philosophy: "손실 한도 15%는 지킨다. 속도는 사업 엔진으로 낸다."
+objectives:
+  - id: O1
+    title: "2031년 말 순자산 100억 원"
+    key_results:
+      - "2027년 말 32억, 2029년 말 50억(중간 점검 관문)"
+      - "사업 순이익 연 3억 → 6억 → 10억 → 13억 → 16억"
+    deadline: 2031-12-31
+  - id: O2
+    title: "월 투자현금흐름 500만 원"
+    deadline: 2027-12-31
+  - id: O3
+    title: "석촌호수 인근 사무실 확보 (경매 1호 또는 임차)"
+    deadline: 2027-12-31
+  - id: O4
+    title: "기독교 인재 교육 씨앗: 리더십 캠프 시범"
+    deadline: 2028-12-31
+later:
+  - "무부채 한강뷰·뉴욕·도쿄만 아파트 (말년)"
+growth:
+  ceiling: none
+risk_limits:
+  basis: total_assets
+  max_drawdown: 0.15
+  warning_at: 0.10
+health_guard: "오너와 가족의 건강 지표가 나빠지면 확장을 멈춘다"

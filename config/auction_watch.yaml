@@ -1,0 +1,22 @@
+# 석촌호수 사무실 1호 물건 감시 조건 (엔진 A)
+name: "석촌호수 1호"
+regions:            # 소재지 주소에 포함되면 통과
+  - "송파구 석촌동"
+  - "송파구 송파동"
+  - "송파구 방이동"
+  - "송파구 잠실동"
+uses:               # 허용 용도
+  - "근린생활시설"
+  - "업무시설"
+  - "상가"
+floors: [2, 3, 4]
+area_pyeong: {min: 10, max: 25}       # 전용면적(평)
+max_total_cost: 400000000             # 총 취득비용 상한(원): 예상 낙찰가 + 취득세 + 수리비
+acquisition_tax_rate: 0.046           # 상가 일반 취득세율(가정) — 세무사 확인
+repair_cost_per_pyeong: 1000000       # 평당 수리비 가정
+expected_bid_ratio: 0.66              # 감정가 대비 예상 낙찰가율(서울 근린시설 최근 12개월)
+max_failed_bids: 3                    # 유찰 횟수 상한
+require:
+  elevator: true
+  no_illegal_building: true
+  no_senior_tenant: true              # 대항력 있는 임차인 없음

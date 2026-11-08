@@ -1,0 +1,9 @@
+# 실제 자산·물건 데이터는 절대 올리지 않는다 (헌장 원칙 4)
+data/private/
+reports/
+logs/
+.env
+*.pem
+__pycache__/
+.pytest_cache/
+*.egg-info/
